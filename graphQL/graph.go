@@ -30,6 +30,7 @@ func NewGraphQLServer(accountURL, catalogURL, orderURL string) (*Server, error) 
 	catalogClient, err := catalog.NewClient(catalogURL)
 
 	if err != nil {
+		accountClient.Close()
 		return nil, err;
 	}
 
@@ -37,6 +38,8 @@ func NewGraphQLServer(accountURL, catalogURL, orderURL string) (*Server, error) 
 	orderClient, err := order.NewClient(orderURL)
 
 	if err != nil {
+		accountClient.Close()
+        catalogClient.Close()
 		return nil, err
 	}
 
@@ -51,7 +54,23 @@ func NewGraphQLServer(accountURL, catalogURL, orderURL string) (*Server, error) 
 
 // func (s *Server) Mutation() MutationResolver {
 
-//        return &mutationResolver{
+//        return mutationResolver {
 // 		server: s,
 // 	   }
 // }
+
+func (s *Server) Query() queryResolver {
+
+	return  queryResolver{
+		server: s,
+	}
+}
+
+func (s *Server) ToExecutableSchema() graphql.ExecutableSchema {
+	return NewExecutableSchema(Config{
+		Resolvers: s,
+	})
+}
+
+
+
