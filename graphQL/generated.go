@@ -15,7 +15,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
-	main "github.com/Adarshused/Ecommerce-MicroService-GO/graphql"
+	main "github.com/Adarshused/Ecommerce-Microservice-GO/graphql"
 	gqlparser "github.com/vektah/gqlparser/v2"
 	"github.com/vektah/gqlparser/v2/ast"
 )
