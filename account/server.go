@@ -21,6 +21,60 @@ func ListenGRPC (s Service, port int) error {
    }
 
    serv := grpc.NewServer()
+   pb.RegisterAccountServiceServer(serv, &grpcServer{s})
+   reflection.Register(serv)
 
+   return serv.Service(lis)
+}
 
+func (s *grpcServer) PostAccount (ctx context.Context,r *pb.PostAccountRequest) (*pb.PostAccountResponse, error) {
+
+	      a, err :=   s.service.PostAccount(ctx, r.Name)
+		  
+		  if err != nil {
+			return nil, err
+		  }
+
+		  return &pb.PostAccountResponse{
+			Account: &pb.Account{
+				Id: a.ID,
+				Name: a.Name,
+			}}, nil
+}
+
+func (s *grpcServer) GetAccount (ctx context.Context, r *pb.GetAccountRequest) (*pb.GetAccountResponse, error) {
+	a, err := s.service.GetAccount(ctx, r.id);
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.GetAccountResponse{
+		Account: &pb.Account{
+			Id: a.ID,
+			Name: a.Name,
+		}}, nil
+}
+
+func (s *grpcServer) GetAccounts (ctx context.Context, r *pb.GetAccountsRequest) (*pb.GetAccountResponse, error) {
+	a, err := s.service.GetAccounts(ctx, r.skip, r.take);
+
+	if err != nil {
+		return nil, err
+	}
+   
+    accounts := []*pb.Account{}
+
+	for _, p := range a {
+		 accounts = append(accounts,  
+		&pb.Account{
+			Id: p.ID,
+			Name: p.Name;
+		}
+		)
+	}
+
+	return &pb.GetAccountsResponse(
+       Accounts: accounts
+	), nil
 }
