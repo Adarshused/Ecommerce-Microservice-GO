@@ -9,11 +9,11 @@ import (
 
 type Client struct {
 	conn *grpc.ClientConn
-	service *pb.AccountServiceClient
+	service pb.AccountServiceClient
 }
 
 func NewClient(url string) (*Client, error) { // 
-	 conn, err := grpc.Dial(url, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.NewClient(url, grpc.WithTransportCredentials(insecure.NewCredentials()))
 
 	 if err != nil {
 		return nil, err
@@ -54,7 +54,7 @@ func (c *Client) GetAccount (ctx context.Context, id string) (*Account, error) {
 
 
 func (c *Client) GetAccounts (ctx context.Context, skip uint64, take uint64) ([]Account, error) {
-	 r, err := c.service.GetAccountsRequest(ctx, &pb.GetAccountsRequest{Skip: skip, Take: take})
+	 r, err := c.service.GetAccounts(ctx, &pb.GetAccountsRequest{Skip: skip, Take: take})
 
 	 if err != nil {
 		return nil, err
