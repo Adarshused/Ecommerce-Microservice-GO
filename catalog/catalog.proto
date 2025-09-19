@@ -22,11 +22,11 @@ message GetProductRequest {
    string id = 1;
 }
 
-message GetproductResponse {
+message GetProductResponse {
    Product product = 1;
 }
 
-message GetproductsRequest {
+message GetProductsRequest {
     uint64 skip = 1;
     uint64 take = 2;
     repeated string ids = 3;
@@ -34,7 +34,7 @@ message GetproductsRequest {
 }
 
 
-message GetproductsResponse {
+message GetProductsResponse {
     repeated Product products = 1;
 }
 
