@@ -34,7 +34,7 @@ message GetproductsRequest {
 }
 
 
-message GetproductResponse {
+message GetproductsResponse {
     repeated Product products = 1;
 }
 
